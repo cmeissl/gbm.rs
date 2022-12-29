@@ -38,6 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: sudo apt-get install -y libwayland-dev
       - name: Setup Rust
         uses: actions-rs/toolchain@v1
         with:
@@ -52,7 +53,7 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-          key: ${{ runner.os }}-cargo-rust_nightly-${{ hashFiles('**/Cargo.toml') }}
+          key: ${{ runner.os }}-cargo-rust_stable-${{ hashFiles('**/Cargo.toml') }}
       - name: Documentation
         uses: actions-rs/cargo@v1
         env:
@@ -64,10 +65,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: sudo apt-get install -y libdrm-dev
+      - run: sudo apt-get install -y libdrm-dev libwayland-dev
       - uses: actions-rs/toolchain@v1
         with:
-          toolchain: nightly
+          toolchain: 1.60.0
           profile: minimal
           components: clippy
           default: true
@@ -78,12 +79,12 @@ jobs:
           path: |
             ~/.cargo/registry
             ~/.cargo/git
-          key: ${{ runner.os }}-cargo-rust_nightly-${{ hashFiles('**/Cargo.toml') }}
+          key: ${{ runner.os }}-cargo-rust_1_59-${{ hashFiles('**/Cargo.toml') }}
       - name: Build cache
         uses: actions/cache@v2
         with:
           path: target
-          key: ${{ runner.os }}-build-rust_nightly-check-${{ hashFiles('**/Cargo.toml') }}
+          key: ${{ runner.os }}-build-rust_1_59-check-${{ hashFiles('**/Cargo.toml') }}
       - name: Clippy check
         uses: actions-rs/clippy-check@v1
         with:
@@ -94,7 +95,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - run: sudo apt-get install -y libdrm-dev
+      - run: sudo apt-get install -y libdrm-dev libwayland-dev
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
@@ -168,7 +169,7 @@ jobs:
         if: contains(matrix.target, '-linux-') && startsWith(matrix.target, 'x86_64-')
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libdrm-dev libgbm-dev
+          sudo apt-get install -y libdrm-dev libgbm-dev libwayland-dev
       - name: Setup cross linux toolchain
         if: contains(matrix.target, '-linux-') && !startsWith(matrix.target, 'x86_64-')
         run: |
@@ -197,7 +198,7 @@ jobs:
           dpkg --print-foreign-architectures
           sudo apt-get update -y
           sudo apt-get upgrade -y --fix-broken
-          sudo apt-get install -y libdrm-dev:${SYSTEM_ARCH} libgbm-dev:${SYSTEM_ARCH} gcc-${GCC_TARGET} pkg-config-${GCC_TARGET}
+          sudo apt-get install -y libdrm-dev:${SYSTEM_ARCH} libgbm-dev:${SYSTEM_ARCH} libwayland-dev:${SYSTEM_ARCH} gcc-${GCC_TARGET} pkg-config-${GCC_TARGET}
           echo "CARGO_TARGET_${ENV_TARGET_UC}_LINKER=${GCC_TARGET}-gcc" >> $GITHUB_ENV
           echo "PKG_CONFIG_ALLOW_CROSS=1" >> $GITHUB_ENV
           echo "PKG_CONFIG_${ENV_TARGET}=${GCC_TARGET}-pkg-config" >> $GITHUB_ENV
