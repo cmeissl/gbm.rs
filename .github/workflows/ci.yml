@@ -185,12 +185,12 @@ jobs:
           case "${{ matrix.target }}" in
             arm* | aarch64*)
           sudo tee /etc/apt/sources.list << EOF
-          deb [arch=i386,amd64] http://archive.ubuntu.com/ubuntu/ focal main universe
-          deb [arch=i386,amd64] http://archive.ubuntu.com/ubuntu/ focal-updates main universe
-          deb [arch=i386,amd64] http://security.ubuntu.com/ubuntu/ focal-security main universe
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ focal main universe
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ focal-updates main universe
-          deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ focal-security main universe
+          deb [arch=i386,amd64] http://archive.ubuntu.com/ubuntu/ jammy main universe
+          deb [arch=i386,amd64] http://archive.ubuntu.com/ubuntu/ jammy-updates main universe
+          deb [arch=i386,amd64] http://security.ubuntu.com/ubuntu/ jammy-security main universe
+          deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ jammy main universe
+          deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ jammy-updates main universe
+          deb [arch=armhf,arm64] http://ports.ubuntu.com/ubuntu-ports/ jammy-security main universe
           EOF
               ;;
           esac
